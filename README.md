@@ -2,6 +2,10 @@
 
 This project is a Streamlit-based web application that provides interactive visualizations of car sales data in the USA.
 
+## Live Demo
+You can access the deployed application here:  
+**[Car Sales Dashboard](https://car-sales-dashboard-fob8.onrender.com)**
+
 ## Features
 - Interactive histogram: Analyze the price distribution of cars filtered by their condition.
 - Popularity of car types: A bar chart showing the most popular car types by the number of listings.
