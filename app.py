@@ -25,10 +25,12 @@ if st.checkbox("Show price distribution of cars"):
         df_filtered = df
 
     # Create histogram
-    fig_price = px.histogram(df_filtered, x="price", nbins=50,
-                             title=f"Price Distribution of Cars ({', '.join(selected_conditions)})",
-                             labels={"price": "Price ($)", "count": "Number of Listings"},
-                             color_discrete_sequence=["royalblue"])
+    fig_price = px.histogram(
+        df_filtered, x="price", nbins=50,
+        title=f"Price Distribution of Cars ({', '.join(selected_conditions)})",
+        labels={"price": "Price ($)", "count": "Number of Listings"},
+        color_discrete_sequence=["royalblue"]
+    )
 
     # Customize chart
     fig_price.update_layout(
@@ -52,18 +54,27 @@ if st.checkbox("Show popularity of car types"):
     type_counts.columns = ["type", "count"]
     type_counts = type_counts.sort_values(by="count", ascending=False)
 
+    # Checkbox to show only the top 5 car types
+    show_top_5 = st.checkbox("Show Only Top 5 Car Types", help="Toggle to show only the 5 most common car types")
+
+    if show_top_5:
+        type_counts = type_counts.head(5)
+
     # Create bar chart
-    fig_type = px.bar(type_counts, x="count", y="type", orientation="h",
-                      title="Popularity of Car Types",
-                      labels={"count": "Number of Listings", "type": "Car Type"},
-                      color_discrete_sequence=["royalblue"])
+    fig_type = px.bar(
+        type_counts, x="count", y="type", orientation="h",
+        title="Popularity of Car Types",
+        labels={"count": "Number of Listings", "type": "Car Type"},
+        color_discrete_sequence=["royalblue"],
+        text="count"
+    )
 
     # Customize chart
     fig_type.update_layout(
         xaxis_title="Number of Listings",
         yaxis_title="Car Type",
         template="plotly_white",
-        xaxis=dict(range=[0, 13000]),
+        xaxis=dict(range=[0, max(type_counts["count"]) * 1.1]),
         yaxis=dict(categoryorder="total ascending"),
         height=600,
         bargap=0.1
@@ -80,11 +91,13 @@ if st.checkbox("Show price vs. odometer"):
     df_filtered_odometer = df[(df["price"] <= 100000) & (df["odometer"] <= 400000)]
 
     # Create scatter plot
-    fig_scatter = px.scatter(df_filtered_odometer, x="odometer", y="price",
-                             title="Price vs. Odometer",
-                             labels={"odometer": "Odometer (miles)", "price": "Price ($)"},
-                             color_discrete_sequence=["royalblue"],
-                             opacity=0.5)
+    fig_scatter = px.scatter(
+        df_filtered_odometer, x="odometer", y="price",
+        title="Price vs. Odometer",
+        labels={"odometer": "Odometer (miles)", "price": "Price ($)"},
+        color_discrete_sequence=["royalblue"],
+        opacity=0.5
+    )
 
     # Customize chart
     fig_scatter.update_layout(
